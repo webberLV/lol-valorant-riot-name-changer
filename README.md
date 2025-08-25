@@ -26,9 +26,10 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr -useb get.scoop.sh | ie
 ## How to Use
 
 1. Start Riot client and log in
-2. Run: `python riot_id_changer.py` (or double-click it)  
-3. Type your new name and tagline
-4. Done
+2. Open terminal/command prompt in the folder where you downloaded `riot_id_changer.py`
+3. Run: `python riot_id_changer.py` or `./riot_id_changer.py` (or double-click it)  
+4. Type your new name and tagline
+5. Done
 
 ## How It Works
 
@@ -45,4 +46,3 @@ Reads your Riot client's connection info and uses the same API the official clie
 - You need a free name change on your account
 - Uses official Riot APIs locally  
 - MIT License - do whatever
-- Use at your own risk
