@@ -28,7 +28,7 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser; iwr -useb get.scoop.sh | ie
 1. Start Riot client and log in
 2. Open terminal/command prompt in the folder where you downloaded `riot_id_changer.py`
 3. Run: `python riot_id_changer.py` or `./riot_id_changer.py` (or double-click it)  
-4. Type your new name and tagline
+4. It will ask you to type in your new riotid first then it will asak you to change tagline after.
 5. Done
 
 ## How It Works
