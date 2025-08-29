@@ -1,4 +1,5 @@
-# Riot ID Name Changer (LoL & Valorant)
+# # Riot ID\name + tagline | League of legends (LOL)\Valorant name + tagline  
+
 
 Uses Riot's Local Client API (LCU). Works only if the Riot Client is running and logged in.
 It makes just two requests per change: validate ID → apply change.
@@ -36,6 +37,6 @@ Follow instructions:
 ---
 
 Use responsibly at your own accord. Don’t spam the LCU with thousands of requests.
-Not affiliated with Riot Games.
+I have  No affiliation with Riot Games.
 
 ---
