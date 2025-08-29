@@ -35,7 +35,7 @@ Follow instructions:
 
 ---
 
-Use responsibly. Don’t spam the LCU with thousands of requests.
+Use responsibly at your own accord. Don’t spam the LCU with thousands of requests.
 Not affiliated with Riot Games.
 
 ---
