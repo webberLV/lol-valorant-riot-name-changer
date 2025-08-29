@@ -1,6 +1,6 @@
-# Riot ID Changer (Unofficial)
+ # Riot ID Changer (Unofficial)
 
-⚠️ **Disclaimer**: This script uses Riot's local client API (LCU). It only works if the Riot Client is running and you're logged in. It's unofficial and not supported by Riot. Use responsibly.
+⚠️ **Disclaimer**: This script uses Riot's local client API (LCU). It only works if the Riot Client is running and you're logged in.  
 
 ## What it does
 
@@ -45,6 +45,9 @@ chmod +x riot_id_changer.py
 python riot_id_changer.py
 ```
 
+## Other
+I have no affilation to Riot games. Use responsibly at your own risk. Example of acting like a sp*az: blowing up lcu connector with 211043 name change  requests. 
+
 ## Example session
 
 ```
@@ -58,3 +61,4 @@ Change to 'SummonerX#1234'? (y/n): y
 🎉 Success!
 New Riot ID: SummonerX#1234
 ```
+
