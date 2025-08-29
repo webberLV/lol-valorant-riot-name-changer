@@ -25,7 +25,7 @@ chmod +x riot_id_changer.py
 Or run the Windows executable.
 
 Follow instructions:
-[Example Screenshot](https://raw.githubusercontent.com/webberLV/lol-valorant-riot-name-changer/main/img/Example.png)
+![Example Screenshot](https://raw.githubusercontent.com/webberLV/lol-valorant-riot-name-changer/main/img/Example.png)
 
 ## Troubleshooting
 
