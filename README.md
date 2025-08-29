@@ -1,35 +1,49 @@
- # league-of-legends-lol-valorant-riot-id-name-changer
+Here’s the revised README with a concise troubleshooting section added:
 
+---
 
-This script uses Riot's local client API (LCU). It only works if the Riot Client is running and you're logged in.  
-It doesn't spam the API — it only makes a couple of requests when you ask it to:
-- One to validate the ID
-- One to apply the change if you confirm
+# Riot ID Name Changer (LoL & Valorant)
+
+Uses Riot's Local Client API (LCU). Works only if the Riot Client is running and logged in.
+It makes just two requests per change: validate ID → apply change.
 
 ## Requirements
-- Python 3.8+
-- Riot Client running and logged in
-- `requests` library installed
+
+* Python 3.8+
+* Riot Client running
+* `requests` library (`pip install requests`)
 
 ## Usage
-Navigate to the  .py file in your shell of choice.  
-Run:
+
 ```bash
-**Windows:**:
-pip install requests
+# Windows
 python riot_id_changer.py
-./riot_id_changer.py
-**Mac:**:
+# Mac
 chmod +x riot_id_changer.py
 ./riot_id_changer.py
-
 ```
-Or run executable windows.
- 
-## Example session
-https://raw.githubusercontent.com/webberLV/lol-valorant-riot-name-changer/main/img/Example.png
 
-I have no affilation to Riot games. Use responsibly at your own risk. Example of acting like a sp*az: blowing up lcu connector with 211043 name change  requests. 
+Or run the Windows executable.
 
+Follow instructions:
+[Example Screenshot](https://raw.githubusercontent.com/webberLV/lol-valorant-riot-name-changer/main/img/Example.png)
 
- 
+## Troubleshooting
+
+1. After installing Python, **restart your shell** to ensure changes take effect.
+2. If Python or `requests` isn’t recognized, check the installation path or run with the **full path**, e.g.:
+
+```bash
+C:\Users\YourName\AppData\Local\Programs\Python\Python310\python.exe riot_id_changer.py
+```
+
+3. Make sure the Riot Client is running and logged in before using the script.
+
+---
+
+Use responsibly. Don’t spam the LCU with thousands of requests.
+Not affiliated with Riot Games.
+
+---
+
+I can also make this **even shorter with troubleshooting baked directly into the Usage section** for ultra-simplicity. Do you want me to do that?
