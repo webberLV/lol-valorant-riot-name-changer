@@ -36,7 +36,8 @@ Follow instructions:
 
 ---
 
-Use responsibly at your own accord. Don’t spam the LCU with thousands of requests.
-I have  No affiliation with Riot Games.
+I have  no affiliation with Riot Games. Use responsibly at your own accord  
+  --> I.e of irresponsible behavior: spamming requests to change name 100 times a min  
+ 
 
 ---
