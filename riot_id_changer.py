@@ -77,12 +77,11 @@ def decode_jwt_payload(token):
         decoded = base64.b64decode(payload).decode('utf-8')
         return json.loads(decoded)
     except (ValueError, json.JSONDecodeError, base64.binascii.Error, UnicodeDecodeError):
-        return None  # ⚠ Added UnicodeDecodeError handling
+        return None  # ⚠ Robust error handling
 
 
 def extract_game_name(result):
     """Helper to extract gameName and tagLine from API result"""
-    # Previous version: long inline logic inside get_current_riot_id
     game_name = result.get("gameName") or result.get("game_name") or result.get("displayName")
     tag_line = result.get("tagLine") or result.get("tag_line") or result.get("tag")
 
@@ -105,27 +104,19 @@ def extract_game_name(result):
 
 
 def get_current_riot_id():
-    """Get the current Riot ID - refactored for clarity and caching"""
-    session_endpoints = [
-        "/rso-auth/v1/authorization/userinfo",
-        "/rso-auth/v1/session",
-        "/player-account/aliases/v1/current",
-        "/lol-summoner/v1/current-summoner",
-        "/chat/v1/me"
-    ]
-
-    for endpoint in session_endpoints:
-        try:
-            response = make_riot_request(endpoint)
-            if response.status_code == 200:
-                result = response.json()
-                game_name, tag_line = extract_game_name(result)
-                if game_name:
-                    return f"{game_name}#{tag_line if tag_line else '[unknown]'}"
-        except Exception as e:
-            # ⚠ Previous version silently continued, now logs for debugging
-            print(f"Debug: failed endpoint {endpoint} - {e}")
-            continue
+    """Get the current Riot ID using the /player-account/aliases/v1/active endpoint"""
+    endpoint = "/player-account/aliases/v1/active"  # ⚠ Changed to /player-account/aliases/v1/active for reliable ID retrieval
+    try:
+        response = make_riot_request(endpoint)
+        if response.status_code != 200:
+            print(f"Debug: failed endpoint {endpoint} - status code {response.status_code}")
+            return None
+        result = response.json()
+        game_name, tag_line = extract_game_name(result)
+        if game_name:
+            return f"{game_name}#{tag_line if tag_line else '[unknown]'}"
+    except Exception as e:
+        print(f"Debug: failed endpoint {endpoint} - {e}")
     return None
 
 
@@ -146,7 +137,6 @@ def change_name(game_name, tag_line=""):
     return False, f"{result.get('errorCode', '')} {result.get('errorMessage', 'Unknown error')}"
 
 
-# ⚠ Refactored main to separate input, validation, and API actions
 def prompt_for_name():
     game_name = input("Enter new name: ").strip()
     if not game_name:
@@ -157,59 +147,71 @@ def prompt_for_name():
     return game_name, tag_line
 
 
+def restart():
+    print("\n🔄 Restarting...\n")
+    main()
+
+
 def main():
     print("=== Riot ID Name Changer ===")
     print("Make sure your Riot client is running and you're logged in!\n")
 
-    client_info = find_riot_client_info()
-    if not client_info:
-        print("❌ Riot client not found or not running")
-        input("Press Enter to exit...")
-        return
+    try:
+        client_info = find_riot_client_info()
+        if not client_info:
+            print("❌ Riot client not found or not running")
+            input("Press Enter to exit...")
+            return
 
-    print("✅ Connected to Riot client")
+        print("✅ Connected to Riot client")
 
-    current_id = get_current_riot_id()
-    if current_id:
-        print(f"📋 Current Riot ID: {current_id}")
-    else:
-        print("⚠️ Could not retrieve current Riot ID (but name change will still work)")
+        current_id = get_current_riot_id()
+        if current_id:
+            print(f"📋 Current Riot ID: {current_id}")
+        else:
+            print("⚠️ Could not retrieve current Riot ID (but name change will still work)")
 
-    print("\n📝 Instructions:")
-    print("1. Enter your desired Riot ID (before #)")
-    print("2. Enter your tagline 4 digits after hashtag (after #)")
+        print("\nInstructions:")
+        print("1. Enter your desired Riot ID (before #)")
+        print("2. Enter your tagline 4 digits after hashtag (after #)")
 
-    game_name, tag_line = prompt_for_name()
-    if not game_name:
-        input("Press Enter to exit...")
-        return
+        game_name, tag_line = prompt_for_name()
+        if not game_name:
+            choice = input("Press [R] to restart or Enter to exit: ").lower()
+            if choice == "r":
+                restart()
+            return
 
-    new_riot_id = f"{game_name}#{tag_line if tag_line else '[auto]'}"
+        new_riot_id = f"{game_name}#{tag_line if tag_line else 'auto-generated'}"
 
-    print(f"\n🔍 Checking availability of '{new_riot_id}'...")
-    is_valid, reason = validate_name(game_name, tag_line)
+        print(f"\n🔍 Checking availability of '{new_riot_id}'...")
+        is_valid, reason = validate_name(game_name, tag_line)
+        if not is_valid:
+            print(f"❌ Name not available: {reason}")
+            choice = input("Press [R] to restart or Enter to exit: ").lower()
+            if choice == "r":
+                restart()
+            return
 
-    if not is_valid:
-        print(f"❌ Name not available: {reason}")
-        input("Press Enter to exit...")
-        return
+        print("✅ Name is available!")
+        confirm = input(f"Change Riot ID to '{new_riot_id}'? (y/n): ").lower()
+        if confirm not in ['y', 'yes']:
+            print("Operation cancelled.")
+            choice = input("Press [R] to restart or Enter to exit: ").lower()
+            if choice == "r":
+                restart()
+            return
 
-    print("✅ Name is available!")
-    confirm = input(f"Change Riot ID to '{new_riot_id}'? (y/n): ").lower()
+        print("\n🔄 Changing name...")
+        success, message = change_name(game_name, tag_line)
+        if success:
+            print(f"✅ {message}")
+            print(f"🎉 Your new Riot ID is: {new_riot_id}")
+        else:
+            print(f"❌ Failed to change name: {message}")
 
-    if confirm not in ['y', 'yes']:
-        print("Operation cancelled.")
-        input("Press Enter to exit...")
-        return
-
-    print("\n🔄 Changing name...")
-    success, message = change_name(game_name, tag_line)
-
-    if success:
-        print(f"✅ {message}")
-        print(f"🎉 Your new Riot ID is: {new_riot_id}")
-    else:
-        print(f"❌ Failed to change name: {message}")
+    except Exception as e:
+        print(f"❌ Error: {e}")
 
     print()
     input("Press Enter to exit...")
