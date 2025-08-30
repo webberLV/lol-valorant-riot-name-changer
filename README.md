@@ -1,4 +1,4 @@
-# # Riot ID\name + tagline | League of legends (LOL)\Valorant name + tagline  
+# # Riot ID\name + tagline | League of legends lol id/name + tagline| Valorant name id/name + tagline  Changer
 
 
 Uses Riot's Local Client API (LCU). Works only if the Riot Client is running and logged in.
